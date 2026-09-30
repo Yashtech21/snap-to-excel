@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Snap to Excel</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <h1>Snap to Excel</h1>
+    <p id="account" class="muted">Checking account…</p>
+  </header>
+
+  <button id="captureBtn" class="primary">Capture this page</button>
+
+  <section>
+    <label class="row">
+      <input type="checkbox" id="siteToggle">
+      <span id="siteLabel">Show button on this site</span>
+    </label>
+    <p id="siteHint" class="muted" hidden></p>
+  </section>
+
+  <section>
+    <label for="mode">Capture area</label>
+    <select id="mode">
+      <option value="viewport">Whole visible page</option>
+      <option value="region">Fixed area</option>
+    </select>
+    <button id="regionBtn" class="secondary">Set fixed area on this page</button>
+  </section>
+
+  <p id="pending" class="warn" hidden></p>
+  <p id="message" class="muted" role="status"></p>
+
+  <footer><button id="settingsBtn" class="link">Settings</button></footer>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

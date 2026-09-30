@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Snap to Excel",
+  "version": "1.0.0",
+  "description": "Capture screenshots into a local Excel workbook or OneDrive/SharePoint.",
+  "minimum_chrome_version": "110",
+  "permissions": ["activeTab", "storage", "identity", "scripting", "alarms", "notifications"],
+  "host_permissions": [
+    "https://graph.microsoft.com/*",
+    "https://login.microsoftonline.com/*"
+  ],
+  "optional_host_permissions": ["https://*/*", "http://*/*"],
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Snap to Excel",
+    "default_popup": "popup/popup.html",
+    "default_icon": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" }
+  },
+  "options_ui": { "page": "options/options.html", "open_in_tab": true },
+  "commands": {
+    "capture-screenshot": {
+      "suggested_key": { "default": "Alt+Shift+S" },
+      "description": "Capture a screenshot and add it to Excel"
+    }
+  },
+  "icons": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" }
+}

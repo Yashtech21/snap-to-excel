@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Snap to Excel settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+<main>
+  <h1>Snap to Excel</h1>
+  <p class="lead">Capture screenshots into a local Excel workbook or a OneDrive/SharePoint workbook.</p>
+
+  <section>
+    <h2>Destination type</h2>
+    <label>Save captures to
+      <select id="destinationMode">
+        <option value="local">Excel workbook on this device (offline)</option>
+        <option value="cloud">OneDrive or SharePoint</option>
+      </select>
+    </label>
+  </section>
+
+  <section id="localDestination" hidden>
+    <h2>Excel workbook on this device</h2>
+    <p class="hint">Choose an existing .xlsx file. Screenshots are embedded in the workbook and metadata is added as a new row. The file stays on this device.</p>
+    <div class="actions">
+      <button id="chooseWorkbook" type="button" class="primary">Choose Excel workbook</button>
+      <span id="localWorkbookName" class="status">No workbook selected</span>
+    </div>
+    <p id="localSetupStatus" class="status" role="status"></p>
+    <p class="hint">Each capture adds to the “Screenshots” worksheet. Keep the workbook closed in Excel while capturing. Use a simple workbook dedicated to screenshots; advanced Excel features may not be preserved when the file is rewritten.</p>
+  </section>
+
+  <section id="cloudAccount">
+    <h2>1. Microsoft account</h2>
+    <p class="hint">Register a free app in Microsoft Entra (see README) and paste its details here. No secret is needed.</p>
+    <label>Application (client) ID <input id="clientId" autocomplete="off" spellcheck="false"></label>
+    <label>Tenant <input id="tenant" placeholder="organizations" autocomplete="off" spellcheck="false">
+      <span class="hint">Use “organizations” for work accounts, or your tenant ID / domain.</span></label>
+    <label>Redirect URI to register (Single-page application)
+      <span class="inline"><input id="redirect" readonly><button id="copyRedirect" type="button">Copy</button></span></label>
+    <div class="actions">
+      <button id="signin" type="button" class="primary">Sign in with Microsoft</button>
+      <button id="signout" type="button">Sign out</button>
+      <span id="account" class="status"></span>
+    </div>
+  </section>
+
+  <section id="cloudDestination">
+    <h2>2. Destination</h2>
+    <label>Excel workbook link
+      <input id="workbookUrl" placeholder="Paste the link from Share → Copy link" autocomplete="off" spellcheck="false"></label>
+    <div class="grid">
+      <label>Worksheet <input id="worksheet"></label>
+      <label>Table name <input id="tableName"></label>
+      <label>Image folder <input id="folder">
+        <span class="hint">Created next to the workbook.</span></label>
+    </div>
+    <div class="actions">
+      <button id="setup" type="button" class="primary">Set up destination</button>
+      <span id="setupStatus" class="status"></span>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. Capture</h2>
+    <fieldset>
+      <legend>Capture area</legend>
+      <label class="check"><input type="radio" name="captureMode" value="viewport"> Whole visible page</label>
+      <label class="check"><input type="radio" name="captureMode" value="region"> Fixed area</label>
+    </fieldset>
+    <div class="grid four">
+      <label>X <input id="rx" type="number" min="0"></label>
+      <label>Y <input id="ry" type="number" min="0"></label>
+      <label>Width <input id="rw" type="number" min="20"></label>
+      <label>Height <input id="rh" type="number" min="20"></label>
+    </div>
+    <p class="hint">Pixels from the top-left of the page. Easier: open a site, click the toolbar icon and choose “Set fixed area on this page”.</p>
+    <label>Skip identical screenshots taken within (seconds; 0 turns this off)
+      <input id="dedupeSeconds" type="number" min="0" max="600"></label>
+    <fieldset>
+      <legend>Columns to fill</legend>
+      <label class="check"><input type="checkbox" id="includeTimestamp"> Timestamp</label>
+      <label class="check"><input type="checkbox" id="includePageTitle"> Page title</label>
+      <label class="check"><input type="checkbox" id="includePageUrl"> Page URL</label>
+    </fieldset>
+  </section>
+
+  <section>
+    <h2>4. Floating button</h2>
+    <label class="check"><input type="checkbox" id="showButton"> Show the floating button</label>
+    <div class="grid">
+      <label>Size <input id="buttonSize" type="range" min="32" max="80" step="2"></label>
+      <label>Opacity <input id="buttonOpacity" type="range" min="0.3" max="1" step="0.05"></label>
+      <div class="actions"><button id="resetPos" type="button">Reset position</button></div>
+    </div>
+    <p class="hint">Turn the button on for a site from the toolbar popup. The shortcut <strong>Alt+Shift+S</strong> works everywhere; change it at chrome://extensions/shortcuts.</p>
+    <h3>Sites with the button</h3>
+    <ul id="sites" class="sites"></ul>
+  </section>
+
+  <section>
+    <h2>Upload queue</h2>
+    <p id="queue" class="status"></p>
+    <div class="actions">
+      <button id="retry" type="button">Retry now</button>
+      <button id="discard" type="button" class="danger">Discard waiting screenshots</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Privacy</h2>
+    <p class="hint">Local workbook captures stay on your device. Cloud mode sends captures only to the OneDrive/SharePoint workbook you select.</p>
+    <button id="clearAll" type="button" class="danger">Sign out and delete all local data</button>
+  </section>
+
+  <div class="savebar">
+    <button id="save" type="button" class="primary">Save settings</button>
+    <span id="saved" class="status" role="status"></span>
+  </div>
+</main>
+<script src="../vendor/exceljs.min.js"></script>
+<script type="module" src="options.js"></script>
+</body>
+</html>
